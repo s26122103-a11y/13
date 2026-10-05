@@ -636,3 +636,14 @@
                 <div class="card-title">Week 16 - 尚未解鎖</div>
                 <div class="card-status">未開放</div>
             </div>
+
+        </main>
+
+        <footer>
+            <p>© 2026 Alex's Web Lab • Built with Love & Code</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
