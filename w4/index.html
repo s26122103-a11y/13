@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="ja-TW">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>復古懷舊留言板</title>
+  <title>昭和ロマン 寄せ書き帳 | 昭和復古動態留言板</title>
   
+  <!-- Google Fonts: 昭和懷舊感襯線與日系復古字體 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Yuji+Boku&family=Zen+Antique+Soft&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+
   <style>
-    /* ==========================================
-       1. 全局與復古主題設定 (Theme Variables)
-       這裡可以調整全站的背景色、文字顏色與發光強度
-       ========================================== */
+    /* --- 昭和色彩調色盤 (Showa Palette) --- */
     :root {
-      /* 經典懷舊古銅色/暖黃系背景與文字 */
-      --bg-color: #2b261f;           /* 網頁深色底色 (深古銅褐色) */
-      --card-bg: #fffbf0;            /* 留言卡片底色 (米黃羊皮紙感) */
-      --card-border: #8b5a2b;        /* 卡片邊框顏色 (復古棕色) */
-      --text-main: #3d2b1f;          /* 卡片主文字顏色 */
-      --text-muted: #7f6a5b;         /* 時間戳記與次要文字顏色 */
-      --title-color: #f4d068;        /* 大標題金黃色 */
-      
-      /* 輪播高亮 (Highlight) 效果設定 */
-      --highlight-border: #ff4500;   /* 高亮時的邊框顏色 (鮮艷霓虹紅/霓虹橙) */
-      --highlight-glow: rgba(255, 69, 0, 0.8); /* 高亮時的霓虹發光顏色 */
-      --carousel-speed: 3000ms;       /* [重點控制] 輪播切換間隔 (3000ms = 3秒) */
+      --showa-paper: #f4ece1;        /* 復古米黃宣紙/洋紙 */
+      --showa-paper-card: #fffdf9;   /* 明信片白 */
+      --showa-red: #9e2a2b;          /* 昭和紅豆深紅 */
+      --showa-green: #2d5a43;        /* 喫茶店墨綠 */
+      --showa-mustard: #d4a340;      /* 芥末黃銅色 */
+      --showa-brown: #3e2723;        /* 復古木紋/濃縮咖啡深棕 */
+      --showa-ink: #2b211b;          /* 活字印刷墨黑 */
+      --showa-stamp: #b83b3b;        /* 郵便消印朱紅 */
+      --showa-shadow: 4px 5px 0px rgba(62, 39, 35, 0.85);
+      --showa-shadow-hover: 6px 7px 0px rgba(62, 39, 35, 0.95);
     }
 
     * {
@@ -32,330 +32,530 @@
     }
 
     body {
-      background-color: var(--bg-color);
-      /* 復古九點點像素背景圖樣 */
-      background-image: radial-gradient(#4a3b2c 1px, transparent 0);
-      background-size: 16px 16px;
-      font-family: "Courier New", Courier, "Microsoft JhengHei", monospace, sans-serif;
-      color: #fff;
-      padding: 20px;
+      background-color: var(--showa-paper);
+      /* 昭和復古微細網紋底紋 */
+      background-image: 
+        radial-gradient(rgba(62, 39, 35, 0.08) 1px, transparent 0),
+        linear-gradient(to right, rgba(62, 39, 35, 0.02) 1px, transparent 1px);
+      background-size: 20px 20px, 10px 10px;
+      font-family: 'Shippori Mincho', 'Noto Serif TC', serif;
+      color: var(--showa-ink);
+      line-height: 1.7;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
     }
 
-    /* 頁面標題區塊 */
-    header {
+    /* 頂部老式喫茶店・看板招牌風格 Header */
+    .showa-header {
+      padding: 3rem 1.5rem 2rem;
       text-align: center;
-      margin-bottom: 30px;
-      padding: 20px 0;
-      border-bottom: 2px dashed var(--title-color);
+      position: relative;
     }
 
-    header h1 {
-      font-size: 2.2rem;
-      color: var(--title-color);
-      text-shadow: 2px 2px 0px #000, 0 0 10px rgba(244, 208, 104, 0.5);
-      letter-spacing: 2px;
+    .signboard-badge {
+      display: inline-block;
+      background: var(--showa-green);
+      color: var(--showa-paper);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      padding: 0.25rem 1.2rem;
+      border: 1px solid var(--showa-mustard);
+      border-radius: 3px;
+      margin-bottom: 0.6rem;
+      box-shadow: 2px 2px 0px var(--showa-brown);
     }
 
-    header p {
-      margin-top: 8px;
-      color: #d3c4b1;
+    .main-title {
+      font-family: 'Zen Antique Soft', 'Shippori Mincho', serif;
+      font-size: 2.5rem;
+      color: var(--showa-red);
+      letter-spacing: 0.12em;
+      text-shadow: 2px 2px 0px var(--showa-mustard), 3px 3px 0px var(--showa-brown);
+      margin-bottom: 0.4rem;
+    }
+
+    .sub-title {
       font-size: 0.95rem;
+      color: var(--showa-brown);
+      letter-spacing: 0.08em;
+      font-style: italic;
     }
 
-    /* ==========================================
-       2. 載入中酷炫復古動畫 (Loading State)
-       ========================================== */
-    #loading {
+    /* 昭和計數器 */
+    .record-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.2rem;
+      background: var(--showa-paper-card);
+      border: 2px solid var(--showa-brown);
+      padding: 0.35rem 1.2rem;
+      box-shadow: 3px 3px 0px var(--showa-mustard);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    /* --- 主要排版容器 --- */
+    .container {
+      max-width: 1180px;
+      width: 92%;
+      margin: 1rem auto 4rem;
+      flex: 1;
+    }
+
+    /* --- 昭和黑白電視/映像管波長酷炫 Loading --- */
+    #loader {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 60px 0;
-      color: var(--title-color);
-      font-size: 1.3rem;
-      letter-spacing: 1px;
+      padding: 4.5rem 1rem;
     }
 
-    /* 復古螢幕掃描閃爍感沙漏 */
-    .retro-spinner {
-      width: 50px;
-      height: 50px;
-      border: 4px solid var(--title-color);
-      border-top-color: transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite, glowPulse 1.5s ease-in-out infinite alternate;
-      margin-bottom: 20px;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    @keyframes glowPulse {
-      from { box-shadow: 0 0 5px var(--title-color); }
-      to { box-shadow: 0 0 20px var(--title-color); }
-    }
-
-    /* ==========================================
-       3. 瀑布流排版 (Masonry Layout)
-       ========================================== */
-    .masonry-container {
-      /* 使用 CSS Columns 實作瀑布流 */
-      column-count: 3;           /* 桌機預設 3 欄 */
-      column-gap: 20px;          /* 欄位間距 */
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* 響應式斷點：平板 2 欄，手機 1 欄 */
-    @media (max-width: 900px) {
-      .masonry-container { column-count: 2; }
-    }
-    @media (max-width: 600px) {
-      .masonry-container { column-count: 1; }
-    }
-
-    /* ==========================================
-       4. 留言卡片與輪播高亮效果 (Card & Carousel)
-       ========================================== */
-    .card {
-      background-color: var(--card-bg);
-      border: 3px solid var(--card-border);
-      border-radius: 4px;
-      padding: 18px;
-      margin-bottom: 20px;
-      break-inside: avoid;        /* 防止卡片在瀑布流中被截斷 */
-      color: var(--text-main);
-      box-shadow: 4px 4px 0px #000;
-      position: relative;
-      /* 滑順的渡過動畫：當套用高亮或淡化時會有平滑效果 */
-      transition: all 0.5s ease-in-out;
-      transform: scale(1);
-      opacity: 1;
-      filter: blur(0px);
-    }
-
-    /* 復古郵票/貼紙風標題 */
-    .card-header {
+    .crt-tv-box {
+      width: 110px;
+      height: 80px;
+      background: var(--showa-brown);
+      border-radius: 12px;
+      border: 3px solid #231614;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      border-bottom: 1px dashed var(--card-border);
-      padding-bottom: 8px;
-      margin-bottom: 12px;
+      justify-content: center;
+      position: relative;
+      box-shadow: 4px 5px 0px rgba(0,0,0,0.3);
     }
 
-    .card-author {
+    /* 天線 */
+    .crt-tv-box::before, .crt-tv-box::after {
+      content: '';
+      position: absolute;
+      top: -24px;
+      width: 3px;
+      height: 25px;
+      background: var(--showa-brown);
+    }
+    .crt-tv-box::before { left: 40px; transform: rotate(-25deg); }
+    .crt-tv-box::after { right: 40px; transform: rotate(25deg); }
+
+    .crt-screen {
+      width: 78px;
+      height: 56px;
+      background: #475549;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #202b22;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 電視掃描線與收訊信號波 */
+    .crt-screen::before {
+      content: "〜〜〜";
+      color: #9cdb9e;
       font-weight: bold;
+      letter-spacing: 2px;
+      animation: signalWave 1.2s infinite ease-in-out;
+    }
+
+    .scanline {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.45) 50%);
+      background-size: 100% 4px;
+      pointer-events: none;
+    }
+
+    @keyframes signalWave {
+      0% { transform: scale(0.8) translateY(2px); opacity: 0.4; }
+      50% { transform: scale(1.1) translateY(-2px); opacity: 1; }
+      100% { transform: scale(0.8) translateY(2px); opacity: 0.4; }
+    }
+
+    .loading-text {
+      margin-top: 1.5rem;
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.15rem;
+      color: var(--showa-brown);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      animation: retroBlink 1.4s infinite alternate;
+    }
+
+    @keyframes retroBlink {
+      from { opacity: 0.5; }
+      to { opacity: 1; }
+    }
+
+    /* --- 瀑布流排版 (Masonry Layout via column-count) --- */
+    .masonry-board {
+      column-count: 3;
+      column-gap: 1.8rem;
+      display: none; /* 讀取完畢後透過 JS 切換成 block */
+    }
+
+    @media (max-width: 992px) {
+      .masonry-board {
+        column-count: 2;
+        column-gap: 1.4rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .masonry-board {
+        column-count: 1;
+      }
+    }
+
+    /* --- 昭和復古信件 / 純喫茶留言卡片 --- */
+    .showa-card {
+      background: var(--showa-paper-card);
+      border: 2px solid var(--showa-brown);
+      border-radius: 4px;
+      margin-bottom: 1.8rem;
+      break-inside: avoid; /* 避免在多欄瀑布流排版中被截斷拆欄 */
+      box-shadow: var(--showa-shadow);
+      padding: 1.4rem 1.4rem 1.2rem;
+      position: relative;
+      transition: all 0.25s ease;
+      overflow: hidden;
+    }
+
+    .showa-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--showa-shadow-hover);
+      border-color: var(--showa-red);
+    }
+
+    /* 雙層邊框細線 (昭和復古印刷商標特徵) */
+    .showa-card::before {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      right: 5px;
+      bottom: 5px;
+      border: 1px solid rgba(62, 39, 35, 0.25);
+      pointer-events: none;
+    }
+
+    /* 頂部欄：發送者與標籤 */
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--showa-brown);
+      padding-bottom: 0.7rem;
+      margin-bottom: 0.8rem;
+      position: relative;
+    }
+
+    .author-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .matchbox-stamp {
+      background: var(--showa-red);
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border: 1px solid var(--showa-brown);
+      box-shadow: 1px 1px 0px var(--showa-brown);
+      border-radius: 2px;
+      letter-spacing: 0.05em;
+    }
+
+    .author-name {
+      font-family: 'Shippori Mincho', serif;
+      font-weight: 800;
       font-size: 1.1rem;
-      color: #8b0000; /* 濃烈紅褐色名字 */
+      color: var(--showa-ink);
     }
 
     .card-time {
-      font-size: 0.75rem;
-      color: var(--text-muted);
+      font-size: 0.78rem;
+      color: #6d5b51;
+      font-family: monospace;
+      letter-spacing: 0.05em;
     }
 
+    /* 悄悄話留言主體 */
     .card-body {
-      font-size: 0.95rem;
-      line-height: 1.6;
-      word-wrap: break-word;
-      white-space: pre-wrap; /* 保留留言換行 */
+      font-size: 0.98rem;
+      color: #2b211b;
+      white-space: pre-wrap; /* 忠實保留換行 */
+      word-break: break-word;
+      line-height: 1.75;
+      position: relative;
+      z-index: 1;
+      margin: 0.4rem 0 1rem;
+      padding-left: 0.2rem;
     }
 
-    /* 【重點特效 1】：非高亮卡片（變暗與微模糊） */
-    .card.dimmed {
-      opacity: 0.4;
-      filter: blur(1.5px) grayscale(30%);
-      transform: scale(0.96);
+    /* 昭和記念消印（復古圓形郵戳 / 檢驗章） */
+    .postmark-stamp {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      width: 58px;
+      height: 58px;
+      border: 2px dashed var(--showa-stamp);
+      border-radius: 50%;
+      color: var(--showa-stamp);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 800;
+      transform: rotate(-12deg);
+      opacity: 0.75;
+      pointer-events: none;
+      line-height: 1.1;
+      user-select: none;
     }
 
-    /* 【重點特效 2】：被選中的卡片（放大 + 強烈亮起） */
-    .card.highlight {
-      opacity: 1;
-      filter: blur(0px);
-      transform: scale(1.08); /* 放大卡片 */
-      border-color: var(--highlight-border);
-      /* 強烈霓虹邊框發光 + 深色陰影 */
-      box-shadow: 0 0 25px var(--highlight-glow), 6px 6px 0px #000;
-      z-index: 10;            /* 確保高亮卡片浮在最上方 */
+    .postmark-stamp span {
+      border-top: 1px solid var(--showa-stamp);
+      border-bottom: 1px solid var(--showa-stamp);
+      margin: 1px 0;
+      font-size: 0.6rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* 錯誤警報視窗 */
+    .error-box {
+      background: #fdf2f2;
+      border: 2px solid var(--showa-red);
+      color: var(--showa-red);
+      padding: 1.5rem;
+      border-radius: 4px;
+      text-align: center;
+      max-width: 500px;
+      margin: 2rem auto;
+      display: none;
+      box-shadow: 4px 4px 0px var(--showa-brown);
+    }
+
+    /* 頁尾老茶館銘板 */
+    .showa-footer {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      font-size: 0.85rem;
+      color: var(--showa-brown);
+      border-top: 2px dashed rgba(62, 39, 35, 0.3);
+      letter-spacing: 0.1em;
+      background: rgba(244, 236, 225, 0.5);
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>★ 復古懷舊留言板 ★</h1>
-    <p>～ 歡迎來到我的個人小天地，留下你想對我說的話 ～</p>
+  <!-- 頂部招牌區域 -->
+  <header class="showa-header">
+    <div class="signboard-badge">昭和浪漫 喫茶室</div>
+    <h1 class="main-title">友人動態寄せ書き帳</h1>
+    <p class="sub-title">～ 時光留聲機・收錄那些年好友的字字絮語 ～</p>
+    
+    <div id="counter" class="record-counter" style="display: none;">
+      <span>📮 受領件數：</span><span id="counter-num">0</span> 筆錄
+    </div>
   </header>
 
-  <!-- 讀取狀態動畫 -->
-  <div id="loading">
-    <div class="retro-spinner"></div>
-    <p>［ 系統讀取留言中，請稍候... ］</p>
-  </div>
+  <!-- 留言板核心容器 -->
+  <main class="container">
+    <!-- 昭和電視調台收訊動畫 -->
+    <div id="loader">
+      <div class="crt-tv-box">
+        <div class="crt-screen">
+          <div class="scanline"></div>
+        </div>
+      </div>
+      <div class="loading-text">回憶調頻中，讀取留言中...</div>
+    </div>
 
-  <!-- 留言卡片瀑布流容器 -->
-  <main id="board" class="masonry-container"></main>
+    <!-- 錯誤警示卡 -->
+    <div id="error-box" class="error-box"></div>
+
+    <!-- 瀑布流排版區 -->
+    <div id="masonry" class="masonry-board"></div>
+  </main>
+
+  <footer class="showa-footer">
+    ― 昭和浪漫記錄局・時光膠囊 永久保存 ―
+  </footer>
 
   <script>
-    // ==========================================
-    // 5. JavaScript 資料串接與解析邏輯
-    // ==========================================
-
-    // Google 試算表 CSV 發布網址
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTN3V0PHy_VraRz19mcFcffqOn61Cp5nsV3LqF-x6cKm85rspTLEFp1fTw941ZdNFQcLTJqFn3vqLQZ/pub?output=csv';
-
-    // 儲存解析後的留言陣列
-    let messages = [];
-    let currentIndex = 0; // 目前高亮的卡片索引
-    let carouselTimer = null; // 輪播計時器
-
-    // 啟動主程式
-    initBoard();
-
-    async function initBoard() {
-      try {
-        const response = await fetch(csvUrl);
-        const csvText = await response.text();
-        
-        // 解析 CSV 資料
-        messages = parseCSV(csvText);
-
-        // 隱藏 Loading 動畫
-        document.getElementById('loading').style.display = 'none';
-
-        // 渲染卡片到畫面上
-        renderCards(messages);
-
-        // 如果有留言資料，啟動 3 秒輪播特效
-        if (messages.length > 0) {
-          startCarousel();
-        }
-      } catch (error) {
-        console.error('讀取 CSV 失敗:', error);
-        document.getElementById('loading').innerHTML = '<p style="color: #ff6b6b;">［ 讀取留言失敗，請重新整理網頁 ］</p>';
-      }
-    }
-
     /**
-     * CSV 解析器 (能正確處理留言內含有逗號或雙引號的情況)
+     * 專用 RFC-4180 CSV 狀態機解析器
+     * 能正確解析：雙引號包裹、內文含有半形逗號 (,)、多行換行與雙引號轉義 ("")
      */
     function parseCSV(text) {
-      const lines = text.split(/\r\n|\n/);
-      const result = [];
+      const rows = [];
+      let currentRow = [];
+      let currentVal = '';
+      let insideQuote = false;
 
-      // 從第 1 列開始 (忽略第 0 列的標題列)
-      for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (!line) continue;
+      // 統一換行符號為 LF
+      const cleanText = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 
-        // 正則表達式：考慮被雙引號包覆的欄位 (包含逗號的情況)
-        const pattern = /(?:^|,)(?:"([^"]*(?:""[^"]*)*)"|([^,",]*))/g;
-        const row = [];
-        let matches = null;
+      for (let i = 0; i < cleanText.length; i++) {
+        const char = cleanText[i];
+        const nextChar = cleanText[i + 1];
 
-        while ((matches = pattern.exec(line)) !== null) {
-          // 取得 matched 的值並洗掉雙引號
-          let value = matches[1] !== undefined ? matches[1].replace(/""/g, '"') : matches[2];
-          row.push(value ? value.trim() : '');
-        }
-
-        // CSV 欄位順序預設：[0]時間戳記, [1]名字, [2]悄悄話
-        if (row.length >= 2) {
-          result.push({
-            timestamp: row[0] || '未知時間',
-            name: row[1] || '無名氏',
-            content: row[2] || '(無留言內容)'
-          });
+        if (char === '"') {
+          if (insideQuote && nextChar === '"') {
+            currentVal += '"';
+            i++; // 跳過下一個轉義雙引號
+          } else {
+            insideQuote = !insideQuote;
+          }
+        } else if (char === ',' && !insideQuote) {
+          currentRow.push(currentVal.trim());
+          currentVal = '';
+        } else if (char === '\n' && !insideQuote) {
+          currentRow.push(currentVal.trim());
+          if (currentRow.some(col => col.length > 0)) {
+            rows.push(currentRow);
+          }
+          currentRow = [];
+          currentVal = '';
+        } else {
+          currentVal += char;
         }
       }
-      return result;
-    }
 
-    /**
-     * 動態生成卡片 DOM 並繪製於瀑布流牆上
-     */
-    function renderCards(dataList) {
-      const board = document.getElementById('board');
-      board.innerHTML = ''; // 清空內容
-
-      dataList.forEach((item, index) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.dataset.index = index; // 標記索引以利輪播控制
-
-        // 轉義 HTML 避免 XSS 攻擊
-        const safeName = escapeHtml(item.name);
-        const safeContent = escapeHtml(item.content);
-        const safeTime = escapeHtml(item.timestamp);
-
-        card.innerHTML = `
-          <div class="card-header">
-            <span class="card-author">★ ${safeName}</span>
-            <span class="card-time">${safeTime}</span>
-          </div>
-          <div class="card-body">${safeContent}</div>
-        `;
-
-        board.appendChild(card);
-      });
-    }
-
-    // 防範 HTML 注入的小工具
-    function escapeHtml(str) {
-      return str.replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-    }
-
-    // ==========================================
-    // 6. 隨時間輪播高亮特效 (Highlight Carousel)
-    // ==========================================
-
-    function startCarousel() {
-      const cards = document.querySelectorAll('.card');
-      if (cards.length === 0) return;
-
-      // 先執行一次第一次高亮
-      updateHighlight(cards);
-
-      /* ==========================================
-         [重點控制] 輪播秒數控制區：
-         下方 3000 代表 3000 毫秒 (即 3 秒)。
-         可自由修改為 2000 (2秒) 或 5000 (5秒)。
-         ========================================== */
-      carouselTimer = setInterval(() => {
-        // 切換到下一張卡片 (循環)
-        currentIndex = (currentIndex + 1) % cards.length;
-        updateHighlight(cards);
-      }, 3000); 
-    }
-
-    /**
-     * 更新當前高亮的卡片樣式
-     */
-    function updateHighlight(cards) {
-      cards.forEach((card, idx) => {
-        if (idx === currentIndex) {
-          // 被選中的卡片：加上高亮 class，移除 dim class
-          card.classList.add('highlight');
-          card.classList.remove('dimmed');
-
-          // 平滑滾動讓高亮卡片盡量保持在視窗中間區域 (視需要提升體驗)
-          card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        } else {
-          // 其他卡片：加上變暗 class，移除 highlight class
-          card.classList.remove('highlight');
-          card.classList.add('dimmed');
+      if (currentVal.length > 0 || currentRow.length > 0) {
+        currentRow.push(currentVal.trim());
+        if (currentRow.some(col => col.length > 0)) {
+          rows.push(currentRow);
         }
-      });
+      }
+
+      return rows;
     }
+
+    // 格式化時間（簡約昭和郵報風）
+    function formatShowaDate(dateString) {
+      if (!dateString) return '';
+      const d = new Date(dateString);
+      if (!isNaN(d.getTime())) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        const h = String(d.getHours()).padStart(2, '0');
+        const min = String(d.getMinutes()).padStart(2, '0');
+        return `${y}.${m}.${day} ${h}:${min}`;
+      }
+      return dateString;
+    }
+
+    // XSS 防護字串跳脫
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // 主程式：抓取並渲染留言
+    async function fetchShowaMessages() {
+      const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTN3V0PHy_VraRz19mcFcffqOn61Cp5nsV3LqF-x6cKm85rspTLEFp1fTw941ZdNFQcLTJqFn3vqLQZ/pub?output=csv';
+      
+      const loader = document.getElementById('loader');
+      const masonry = document.getElementById('masonry');
+      const counter = document.getElementById('counter');
+      const counterNum = document.getElementById('counter-num');
+      const errorBox = document.getElementById('error-box');
+
+      try {
+        const res = await fetch(csvUrl);
+        if (!res.ok) {
+          throw new Error(`網路通訊中斷 (HTTP代碼: ${res.status})`);
+        }
+
+        const csvRaw = await res.text();
+        const allRows = parseCSV(csvRaw);
+
+        // 移除第一列標題（時間戳記, 名字, 悄悄話）
+        const dataRows = allRows.slice(1);
+
+        // 建立陣列物件並過濾無效留言
+        const messages = dataRows
+          .map(row => ({
+            timestamp: row[0] || '',
+            name: row[1] ? row[1].trim() : '名無しの友人',
+            content: row[2] || ''
+          }))
+          .filter(item => item.content.trim().length > 0)
+          .reverse(); // 最新的留言排在最前面
+
+        if (messages.length === 0) {
+          masonry.innerHTML = `
+            <div style="text-align: center; color: var(--showa-brown); grid-column: 1/-1; padding: 3rem; font-weight: 700;">
+              今日無事，留言簿尚未有友人寫下字句。
+            </div>
+          `;
+        } else {
+          // 渲染各留言卡片
+          masonry.innerHTML = messages.map(msg => {
+            const safeName = escapeHtml(msg.name);
+            const safeContent = escapeHtml(msg.content);
+            const formattedTime = escapeHtml(formatShowaDate(msg.timestamp));
+
+            return `
+              <article class="showa-card">
+                <header class="card-head">
+                  <div class="author-wrapper">
+                    <span class="matchbox-stamp">親展</span>
+                    <span class="author-name">${safeName}</span>
+                  </div>
+                  <time class="card-time">${formattedTime}</time>
+                </header>
+
+                <div class="card-body">${safeContent}</div>
+
+                <!-- 昭和郵戳章印 -->
+                <div class="postmark-stamp">
+                  <div>通信</div>
+                  <span>昭和局</span>
+                  <div>受領印</div>
+                </div>
+              </article>
+            `;
+          }).join('');
+        }
+
+        // 顯示計數
+        counterNum.textContent = messages.length;
+        counter.style.display = 'inline-flex';
+
+      } catch (err) {
+        console.error('Fetch Error:', err);
+        errorBox.textContent = `無法接收到信號：${err.message}。請確認 Google 試算表是否已發布為網頁 (CSV)。`;
+        errorBox.style.display = 'block';
+      } finally {
+        // 隱藏 Loader，展示瀑布流
+        loader.style.display = 'none';
+        masonry.style.display = 'block';
+      }
+    }
+
+    // 頁面初始化
+    document.addEventListener('DOMContentLoaded', fetchShowaMessages);
   </script>
 </body>
 </html>
