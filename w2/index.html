@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今天吃什麼？</title>
+    
+    <!-- CSS 樣式區域 -->
+    <style>
+        /* 全局樣式設定 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #311042 100%);
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        /* 卡片主體 (玻璃擬態風格) */
+        .card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4),
+                        0 0 30px rgba(124, 58, 237, 0.3);
+        }
+
+        /* 大標題與文字效果 */
+        .title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            background: linear-gradient(90deg, #a78bfa, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.3s ease;
+            word-break: break-all;
+        }
+
+        /* 圖片容器 */
+        .image-container {
+            width: 100%;
+            height: 220px;
+            margin-bottom: 25px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(167, 139, 250, 0.3);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 按鈕組與按鈕樣式 */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 28px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 主按鈕：點我抽籤 */
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+            color: #ffffff;
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.6);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        /* 次按鈕：馬上出發 */
+        .btn-secondary {
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 28px rgba(6, 182, 212, 0.5);
+        }
+
+        /* 控制隱藏的工具類別 */
+        .hidden {
+            display: none !important;
+        }
+
+        /* 生動彈跳動畫 (Bounce Effect) */
+        .bounce-animation {
+            animation: bounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes bounce {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(-50px);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.15) translateY(10px);
+            }
+            70% {
+                transform: scale(0.95) translateY(-5px);
+            }
+            100% {
+                transform: scale(1) translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <!-- 標題區域 -->
+        <h1 id="title" class="title">今天吃甚麼？</h1>
+
+        <!-- 照片顯示區域 (預設隱藏) -->
+        <div id="image-container" class="image-container hidden">
+            <img id="food-image" src="" alt="美食照片">
+        </div>
+
+        <!-- 按鈕區域 -->
+        <div class="button-group">
+            <button id="draw-btn" class="btn btn-primary">點我抽籤</button>
+            <a id="map-link" href="#" target="_blank" class="btn btn-secondary hidden">馬上出發 🚀</a>
+        </div>
+    </div>
+
+    <!-- JavaScript 功能邏輯區域 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. 定義食物資料清單 (包含名稱、圖片網址、Google 地圖搜尋關鍵字)
+            const foodList = [
+                {
+                    name: "品香",
+                    image: "https://i.postimg.cc/DyGwCTWt/Screenshot-20260921-132036-Maps.jpg",
+                    mapQuery: "品香"
+                },
+                {
+                    name: "7-11",
+                    image: "https://i.postimg.cc/9MzWy5H5/Screenshot-20260921-132237-Maps.jpg",
+                    mapQuery: "7-ELEVEN"
+                },
+                {
+                    name: "咖哩飯",
+                    image: "https://i.postimg.cc/PfpDk0pw/Screenshot-20260921-132904-Maps.jpg",
+                    mapQuery: "咖哩飯"
+                },
+                {
+                    name: "燒肉飯",
+                    image: "https://i.postimg.cc/mkvM0yyx/Screenshot-20260921-132917-Maps.jpg",
+                    mapQuery: "燒肉飯"
+                },
+                {
+                    name: "水餃",
+                    image: "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=800&q=80",
+                    mapQuery: "水餃"
+                }
+            ];
+
+            // 2. 抓取 HTML 元素
+            const titleElement = document.getElementById('title');
+            const drawBtn = document.getElementById('draw-btn');
+            const imageContainer = document.getElementById('image-container');
+            const foodImage = document.getElementById('food-image');
+            const mapLink = document.getElementById('map-link');
+
+            // 3. 綁定按鈕點擊事件
+            drawBtn.addEventListener('click', () => {
+                // 隨機選取一個項目
+                const randomIndex = Math.floor(Math.random() * foodList.length);
+                const selectedFood = foodList[randomIndex];
+
+                // 重置動畫類別（讓每次點擊都可以再次執行彈跳效果）
+                titleElement.classList.remove('bounce-animation');
+                void titleElement.offsetWidth; // 觸發瀏覽器重繪 (Reflow)
+
+                // 更新標題內容並加入彈跳動畫
+                titleElement.textContent = `🎉 今天就吃：${selectedFood.name}！`;
+                titleElement.classList.add('bounce-animation');
+
+                // 更新圖片連結並顯示圖片
+                foodImage.src = selectedFood.image;
+                foodImage.alt = selectedFood.name;
+                imageContainer.classList.remove('hidden');
+
+                // 更新 Google Map 搜尋連結並顯示「馬上出發」按鈕
+                mapLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedFood.mapQuery)}`;
+                mapLink.classList.remove('hidden');
+            });
+        });
+    </script>
+
+</body>
+</html>
