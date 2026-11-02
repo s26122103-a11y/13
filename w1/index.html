@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>個人數位名片</title>
+  <!-- 引入 Google Fonts 質感字體 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    /* --- 全局設定 --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      /* 淡紫色系藝術漸層背景 */
+      background: linear-gradient(135deg, #f3effa 0%, #e5dcfa 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center; /* 水平置中 */
+      align-items: center;     /* 垂直置中 */
+      color: #4a4062;
+    }
+
+    /* --- 名片主體卡片 --- */
+    .card {
+      background: rgba(255, 255, 255, 0.85); /* 半透明玻璃感 */
+      backdrop-filter: blur(10px);            /* 現代毛玻璃效果 */
+      width: 90%;
+      max-width: 350px;
+      padding: 40px 30px;
+      border-radius: 24px;                   /* 圓潤卡片邊角 */
+      text-align: center;                    /* 內容置中 */
+      box-shadow: 0 15px 35px rgba(138, 114, 179, 0.15); /* 柔和陰影 */
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      transition: transform 0.3s ease;
+    }
+
+    /* 滑鼠懸停微幅浮起 */
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    /* --- 圓形大頭貼 --- */
+    .avatar-container {
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 20px auto;
+      border-radius: 50%;                    /* 裁切成正圓形 */
+      padding: 4px;                          /* 光暈外框間距 */
+      background: linear-gradient(135deg, #bfa3e6, #8e7cc3); /* 紫色漸層外框 */
+      box-shadow: 0 8px 20px rgba(142, 124, 195, 0.25);
+    }
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;                     /* 確保照片不變形 */
+      border-radius: 50%;
+      display: block;
+    }
+
+    /* --- 名字與個人簡介 --- */
+    .name {
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      color: #382c4d;
+    }
+
+    .bio {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: #7a6e93;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+
+    /* --- 按鈕區塊 --- */
+    .button-group {
+      display: flex;
+      flex-direction: column;                /* 按鈕上下排列 */
+      gap: 12px;                             /* 按鈕間距 */
+    }
+
+    .btn {
+      text-decoration: none;                 /* 移除底線 */
+      padding: 12px 20px;
+      border-radius: 50px;                   /* 藥丸形按鈕 */
+      font-size: 0.95rem;
+      font-weight: 400;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      display: block;
+    }
+
+    /* Instagram 按鈕：漸層深紫 */
+    .btn-instagram {
+      background: linear-gradient(135deg, #9b84d4, #7a63b8);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(122, 99, 184, 0.3);
+    }
+
+    .btn-instagram:hover {
+      background: linear-gradient(135deg, #8a71c7, #6952a7);
+      box-shadow: 0 6px 20px rgba(122, 99, 184, 0.45);
+      transform: translateY(-2px);
+    }
+
+    /* Email 按鈕：白底淡紫框 */
+    .btn-email {
+      background: #ffffff;
+      color: #7a63b8;
+      border: 1px solid #dcd3f2;
+    }
+
+    .btn-email:hover {
+      background: #f8f5fe;
+      border-color: #bfa3e6;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 名片主體容器 -->
+  <div class="card">
+    
+    <!-- 圓形大頭貼照片 (可將 src 換成您的照片路徑或網址) -->
+    <div class="avatar-container">
+      <img src=https://i.postimg.cc/dVg5M7jr/1789112437461-(1).jpg alt="大頭貼" class="avatar">
+    </div>
+
+    <!-- 名字與簡介 -->
+    <h1 class="name">李宜珊</h1>
+    <p class="bio">努力生活 勇敢向前 ｜ 追求夢想</p>
+
+    <!-- 按鈕區塊 -->
+    <div class="button-group">
+      <!-- 替換 href 裡面的網址即可連結至您的 IG -->
+      <a href="https://instagram.com" target="_blank" class="btn btn-instagram">Instagram</a>
+      <!-- 替換 href 裡的信箱 (如 mailto:yourname@gmail.com) -->
+      <a href="mailto:example@email.com" class="btn btn-email">Email</a>
+    </div>
+
+  </div>
+
+</body>
+</html>
