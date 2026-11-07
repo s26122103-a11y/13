@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>今天吃什麼？</title>
+    <title>今天吃甚麼？ - 交通號誌抽籤機</title>
     
-    <!-- CSS 樣式區域 -->
+    <!-- CSS 交通號誌視覺風格與動畫 -->
     <style>
-        /* 全局樣式設定 */
+        /* 全局樣式：深色瀝青路面感 */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial Black', 'Impact', sans-serif, "微軟正黑體";
         }
 
         body {
@@ -20,47 +20,94 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #311042 100%);
+            background-color: #1a1a1a;
+            background-image: radial-gradient(#333 15%, transparent 16%), radial-gradient(#222 15%, transparent 16%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
             color: #ffffff;
             padding: 20px;
         }
 
-        /* 卡片主體 (玻璃擬態風格) */
-        .card {
-            background: rgba(255, 255, 255, 0.07);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 24px;
-            padding: 40px 30px;
+        /* 交通號誌指示牌卡片 */
+        .traffic-sign {
+            background: #111111;
+            border: 8px solid #facc15; /* 標誌金黃粗框 */
+            border-radius: 28px;
+            padding: 35px 25px;
             width: 100%;
-            max-width: 450px;
+            max-width: 440px;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4),
-                        0 0 30px rgba(124, 58, 237, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8),
+                        0 0 20px rgba(250, 204, 21, 0.2);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* 大標題與文字效果 */
+        /* 警示線條條紋 */
+        .stripe-bar {
+            height: 12px;
+            width: 100%;
+            background: repeating-linear-gradient(
+                -45deg,
+                #facc15,
+                #facc15 15px,
+                #111 15px,
+                #111 30px
+            );
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+
+        /* 交通號誌紅綠燈 */
+        .traffic-lights {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            background: #222;
+            padding: 10px 20px;
+            border-radius: 30px;
+            width: fit-content;
+            margin: 0 auto 20px auto;
+            border: 3px solid #444;
+        }
+
+        .light {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            opacity: 0.3;
+            transition: opacity 0.3s, box-shadow 0.3s;
+        }
+
+        .light.red { background-color: #ef4444; }
+        .light.yellow { background-color: #f59e0b; }
+        .light.green { background-color: #10b981; }
+
+        .light.active {
+            opacity: 1;
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        /* 標題與路牌文字樣式 */
         .title {
             font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 25px;
-            background: linear-gradient(90deg, #a78bfa, #38bdf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: transform 0.3s ease;
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 3px 3px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
             word-break: break-all;
         }
 
-        /* 圖片容器 */
+        /* 圖片外框（模仿交通告示板） */
         .image-container {
             width: 100%;
             height: 220px;
             margin-bottom: 25px;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(167, 139, 250, 0.3);
+            border: 4px solid #ffffff;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
         }
 
         .image-container img {
@@ -70,7 +117,7 @@
             display: block;
         }
 
-        /* 按鈕組與按鈕樣式 */
+        /* 按鈕組與按鈕風格 */
         .button-group {
             display: flex;
             flex-direction: column;
@@ -78,66 +125,77 @@
         }
 
         .btn {
-            display: inline-block;
-            padding: 16px 28px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border: none;
-            border-radius: 50px;
+            display: block;
+            width: 100%;
+            padding: 16px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            border-radius: 14px;
             cursor: pointer;
             text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 0px rgba(0, 0, 0, 0.4);
         }
 
-        /* 主按鈕：點我抽籤 */
+        /* 主要抽籤按鈕（警告黃底黑字風格） */
         .btn-primary {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
-            color: #ffffff;
-            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+            background-color: #facc15;
+            color: #111111;
+            border: 3px solid #eab308;
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.6);
+            background-color: #fde047;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0px rgba(0, 0, 0, 0.4);
         }
 
         .btn-primary:active {
-            transform: translateY(1px) scale(0.98);
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px rgba(0, 0, 0, 0.4);
         }
 
-        /* 次按鈕：馬上出發 */
+        /* 馬上出發按鈕（指示綠牌風格） */
         .btn-secondary {
-            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            background-color: #10b981;
             color: #ffffff;
-            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.3);
+            border: 3px solid #059669;
         }
 
         .btn-secondary:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 12px 28px rgba(6, 182, 212, 0.5);
+            background-color: #34d399;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0px rgba(0, 0, 0, 0.4);
         }
 
-        /* 控制隱藏的工具類別 */
+        .btn-secondary:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 工具類別：隱藏元素 */
         .hidden {
             display: none !important;
         }
 
-        /* 生動彈跳動畫 (Bounce Effect) */
+        /* 生動彈跳動畫 (Bounce Animation) */
         .bounce-animation {
-            animation: bounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: signBounce 0.65s cubic-bezier(0.36, 0, 0.66, -0.56);
+            animation-fill-mode: forwards;
         }
 
-        @keyframes bounce {
+        @keyframes signBounce {
             0% {
                 opacity: 0;
-                transform: scale(0.3) translateY(-50px);
+                transform: scale(0.3) translateY(-60px);
             }
             50% {
                 opacity: 1;
-                transform: scale(1.15) translateY(10px);
+                transform: scale(1.2) translateY(15px);
             }
-            70% {
-                transform: scale(0.95) translateY(-5px);
+            75% {
+                transform: scale(0.9) translateY(-8px);
             }
             100% {
                 transform: scale(1) translateY(0);
@@ -147,8 +205,19 @@
 </head>
 <body>
 
-    <div class="card">
-        <!-- 標題區域 -->
+    <!-- 道路指示牌外框容器 -->
+    <div class="traffic-sign">
+        <!-- 上方黑黃警示條紋 -->
+        <div class="stripe-bar"></div>
+
+        <!-- 交通號誌燈號區 -->
+        <div class="traffic-lights">
+            <span class="light red" id="light-red"></span>
+            <span class="light yellow" id="light-yellow"></span>
+            <span class="light green" id="light-green"></span>
+        </div>
+
+        <!-- 大標題區塊 -->
         <h1 id="title" class="title">今天吃甚麼？</h1>
 
         <!-- 照片顯示區域 (預設隱藏) -->
@@ -158,70 +227,82 @@
 
         <!-- 按鈕區域 -->
         <div class="button-group">
-            <button id="draw-btn" class="btn btn-primary">點我抽籤</button>
-            <a id="map-link" href="#" target="_blank" class="btn btn-secondary hidden">馬上出發 🚀</a>
+            <button id="draw-btn" class="btn btn-primary">🚦 點我抽籤</button>
+            <a id="map-link" href="#" target="_blank" class="btn btn-secondary hidden">🗺️ 馬上出發</a>
         </div>
     </div>
 
-    <!-- JavaScript 功能邏輯區域 -->
+    <!-- JavaScript 抽籤邏輯與號誌聯動 -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. 定義食物資料清單 (包含名稱、圖片網址、Google 地圖搜尋關鍵字)
+            // 1. 食物選項清單
             const foodList = [
                 {
                     name: "品香",
                     image: "https://i.postimg.cc/DyGwCTWt/Screenshot-20260921-132036-Maps.jpg",
-                    mapQuery: "品香"
+                    mapQuery: "品香平價自助餐 樹德橫山路82號"
                 },
                 {
                     name: "7-11",
                     image: "https://i.postimg.cc/9MzWy5H5/Screenshot-20260921-132237-Maps.jpg",
-                    mapQuery: "7-ELEVEN"
+                    mapQuery: "7-ELEVEN 樹科門市"
                 },
                 {
                     name: "咖哩飯",
                     image: "https://i.postimg.cc/PfpDk0pw/Screenshot-20260921-132904-Maps.jpg",
-                    mapQuery: "咖哩飯"
+                    mapQuery: "THE T café 樹德科大店 / TKS FULL HOUSE series"
                 },
                 {
                     name: "燒肉飯",
                     image: "https://i.postimg.cc/mkvM0yyx/Screenshot-20260921-132917-Maps.jpg",
-                    mapQuery: "燒肉飯"
+                    mapQuery: "元泰燒肉飯"
                 },
                 {
                     name: "水餃",
                     image: "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=800&q=80",
-                    mapQuery: "水餃"
+                    mapQuery: "八方雲集-高雄楠梓店"
                 }
             ];
 
-            // 2. 抓取 HTML 元素
+            // 2. 獲取頁面上的 HTML 元素
             const titleElement = document.getElementById('title');
             const drawBtn = document.getElementById('draw-btn');
             const imageContainer = document.getElementById('image-container');
             const foodImage = document.getElementById('food-image');
             const mapLink = document.getElementById('map-link');
 
-            // 3. 綁定按鈕點擊事件
+            const lightRed = document.getElementById('light-red');
+            const lightYellow = document.getElementById('light-yellow');
+            const lightGreen = document.getElementById('light-green');
+
+            // 3. 點擊抽籤按鈕觸發事件
             drawBtn.addEventListener('click', () => {
-                // 隨機選取一個項目
+                // 切換燈號：先亮黃燈
+                lightRed.classList.remove('active');
+                lightGreen.classList.remove('active');
+                lightYellow.classList.add('active');
+
+                // 隨機選取食物
                 const randomIndex = Math.floor(Math.random() * foodList.length);
                 const selectedFood = foodList[randomIndex];
 
-                // 重置動畫類別（讓每次點擊都可以再次執行彈跳效果）
+                // 重置動畫效果
                 titleElement.classList.remove('bounce-animation');
                 void titleElement.offsetWidth; // 觸發瀏覽器重繪 (Reflow)
 
-                // 更新標題內容並加入彈跳動畫
-                titleElement.textContent = `🎉 今天就吃：${selectedFood.name}！`;
+                // 替換大標題與套用生動彈跳動畫
+                titleElement.textContent = `🚥 前方抵達：${selectedFood.name}！`;
                 titleElement.classList.add('bounce-animation');
 
-                // 更新圖片連結並顯示圖片
+                // 顯示照片與切換綠燈
                 foodImage.src = selectedFood.image;
                 foodImage.alt = selectedFood.name;
                 imageContainer.classList.remove('hidden');
 
-                // 更新 Google Map 搜尋連結並顯示「馬上出發」按鈕
+                lightYellow.classList.remove('active');
+                lightGreen.classList.add('active');
+
+                // 設定並顯示 Google Maps 按鈕
                 mapLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedFood.mapQuery)}`;
                 mapLink.classList.remove('hidden');
             });
