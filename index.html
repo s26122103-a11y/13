@@ -241,7 +241,7 @@
         }
 
         /* --------------------------------------------------------------------------
-           UNLOCKED CARDS (Week 1 - 2)
+           UNLOCKED CARDS (Week 1 - 4)
            -------------------------------------------------------------------------- */
         .card.unlocked {
             background: var(--card-unlocked-bg);
@@ -276,6 +276,16 @@
             color: var(--accent-purple);
         }
 
+        .card.unlocked:nth-child(3) .week-tag {
+            background: rgba(255, 183, 3, 0.2);
+            color: #d97706;
+        }
+
+        .card.unlocked:nth-child(4) .week-tag {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+        }
+
         .card-icon-box {
             width: 38px;
             height: 38px;
@@ -295,6 +305,16 @@
         .card.unlocked:nth-child(2) .card-icon-box {
             background: rgba(139, 92, 246, 0.15);
             color: var(--accent-purple);
+        }
+
+        .card.unlocked:nth-child(3) .card-icon-box {
+            background: rgba(255, 183, 3, 0.2);
+            color: #d97706;
+        }
+
+        .card.unlocked:nth-child(4) .card-icon-box {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
         }
 
         .card-title {
@@ -333,8 +353,16 @@
             border-color: var(--accent-purple);
         }
 
+        .card.unlocked:nth-child(3):hover {
+            border-color: var(--accent-yellow);
+        }
+
+        .card.unlocked:nth-child(4):hover {
+            border-color: var(--accent-green);
+        }
+
         /* --------------------------------------------------------------------------
-           LOCKED CARDS (Week 3 - 16)
+           LOCKED CARDS (Week 5 - 16)
            -------------------------------------------------------------------------- */
         .card.locked {
             background: var(--card-locked-bg);
@@ -365,7 +393,7 @@
             color: #94a3b8;
         }
 
-        /* Hover Animation for Locked Cards (Playful Gentle Wiggle / Shake) */
+        /* Hover Animation for Locked Cards */
         .card.locked:hover {
             background: rgba(255, 255, 255, 0.55);
             opacity: 0.95;
@@ -453,7 +481,7 @@
         <header class="profile-card">
             <div class="avatar-container">
                 <!-- Playful DiceBear Avatar Placeholder -->
-                <img class="avatar-img" src="https://api.dicebear.com/7.x/bottts/svg?seed=AlexWebLab&backgroundColor=f2f2dc,c0aede,d1d4f9" alt="h; 倉鼠的大頭貼">
+                <img class="avatar-img" src="https://api.dicebear.com/7.x/bottts/svg?seed=AlexWebLab&backgroundColor=f2f2dc,c0aede,d1d4f9" alt="倉鼠的大頭貼">
                 <div class="avatar-badge">🚀</div>
             </div>
             <h1 class="profile-name">ネズミネズミ的日記</h1>
@@ -502,7 +530,7 @@
                 <div class="card-top">
                     <span class="week-tag">WEEK 03</span>
                     <div class="card-icon-box">
-                        <i class="fa-solid fa-completed stamp"></i>
+                        <i class="fa-solid fa-face-laugh-squint"></i>
                     </div>
                 </div>
                 <div class="card-title">Week 3 - 迷因圖產生器</div>
@@ -516,7 +544,7 @@
                 <div class="card-top">
                     <span class="week-tag">WEEK 04</span>
                     <div class="card-icon-box">
-                        <i class="fa-solid fa-message board"></i>
+                        <i class="fa-solid fa-comment-dots"></i>
                     </div>
                 </div>
                 <div class="card-title">Week 4 - 悄悄話</div>
@@ -562,7 +590,7 @@
                     <span class="lock-emoji">🔒</span>
                 </div>
                 <div class="card-title">Week 8 - 尚未解鎖</div>
-                <div class="card-footer card-status">未通過</div>
+                <div class="card-status">未通過</div>
             </div>
 
             <!-- 按鈕 9：未解鎖 -->
@@ -648,7 +676,7 @@
         </main>
 
         <footer>
-            <p> 2026 ネズミネズミ的日記</p>
+            <p>© 2026 ネズミネズミ的日記</p>
         </footer>
 
     </div>
