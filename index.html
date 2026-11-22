@@ -24,6 +24,7 @@
             --accent-purple: #8b5cf6;
             --accent-yellow: #ffb703;
             --accent-green: #10b981;
+            --accent-blue: #3b82f6;
             --font-playful: 'Fredoka', 'Noto Sans TC', sans-serif;
             --shadow-pop: 0 12px 28px rgba(255, 94, 126, 0.18);
         }
@@ -156,10 +157,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            overflow: hidden;
             border: 3px solid #ffffff;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             animation: bounceBadge 2s infinite ease-in-out;
+        }
+
+        .avatar-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         @keyframes bounceBadge {
@@ -241,7 +248,7 @@
         }
 
         /* --------------------------------------------------------------------------
-           UNLOCKED CARDS (Week 1 - 4)
+           UNLOCKED CARDS (Week 1 - 5)
            -------------------------------------------------------------------------- */
         .card.unlocked {
             background: var(--card-unlocked-bg);
@@ -266,24 +273,29 @@
             letter-spacing: 0.5px;
         }
 
-        .card.unlocked:nth-child(1) .week-tag {
+        .card.unlocked:nth-child(5n+1) .week-tag {
             background: rgba(255, 94, 126, 0.15);
             color: var(--accent-pink);
         }
 
-        .card.unlocked:nth-child(2) .week-tag {
+        .card.unlocked:nth-child(5n+2) .week-tag {
             background: rgba(139, 92, 246, 0.15);
             color: var(--accent-purple);
         }
 
-        .card.unlocked:nth-child(3) .week-tag {
+        .card.unlocked:nth-child(5n+3) .week-tag {
             background: rgba(255, 183, 3, 0.2);
             color: #d97706;
         }
 
-        .card.unlocked:nth-child(4) .week-tag {
+        .card.unlocked:nth-child(5n+4) .week-tag {
             background: rgba(16, 185, 129, 0.15);
             color: var(--accent-green);
+        }
+
+        .card.unlocked:nth-child(5n+5) .week-tag {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
         }
 
         .card-icon-box {
@@ -297,24 +309,29 @@
             transition: transform 0.4s ease;
         }
 
-        .card.unlocked:nth-child(1) .card-icon-box {
+        .card.unlocked:nth-child(5n+1) .card-icon-box {
             background: rgba(255, 94, 126, 0.15);
             color: var(--accent-pink);
         }
 
-        .card.unlocked:nth-child(2) .card-icon-box {
+        .card.unlocked:nth-child(5n+2) .card-icon-box {
             background: rgba(139, 92, 246, 0.15);
             color: var(--accent-purple);
         }
 
-        .card.unlocked:nth-child(3) .card-icon-box {
+        .card.unlocked:nth-child(5n+3) .card-icon-box {
             background: rgba(255, 183, 3, 0.2);
             color: #d97706;
         }
 
-        .card.unlocked:nth-child(4) .card-icon-box {
+        .card.unlocked:nth-child(5n+4) .card-icon-box {
             background: rgba(16, 185, 129, 0.15);
             color: var(--accent-green);
+        }
+
+        .card.unlocked:nth-child(5n+5) .card-icon-box {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
         }
 
         .card-title {
@@ -345,24 +362,28 @@
             transform: scale(1.25) rotate(12deg);
         }
 
-        .card.unlocked:nth-child(1):hover {
+        .card.unlocked:nth-child(5n+1):hover {
             border-color: var(--accent-pink);
         }
 
-        .card.unlocked:nth-child(2):hover {
+        .card.unlocked:nth-child(5n+2):hover {
             border-color: var(--accent-purple);
         }
 
-        .card.unlocked:nth-child(3):hover {
+        .card.unlocked:nth-child(5n+3):hover {
             border-color: var(--accent-yellow);
         }
 
-        .card.unlocked:nth-child(4):hover {
+        .card.unlocked:nth-child(5n+4):hover {
             border-color: var(--accent-green);
         }
 
+        .card.unlocked:nth-child(5n+5):hover {
+            border-color: var(--accent-blue);
+        }
+
         /* --------------------------------------------------------------------------
-           LOCKED CARDS (Week 5 - 16)
+           LOCKED CARDS (Week 6 - 16)
            -------------------------------------------------------------------------- */
         .card.locked {
             background: var(--card-locked-bg);
@@ -480,9 +501,10 @@
         
         <header class="profile-card">
             <div class="avatar-container">
-                <!-- Playful DiceBear Avatar Placeholder -->
                 <img class="avatar-img" src="https://i.postimg.cc/DZ8sXBZW/Gemini-Generated-Image-ebs86tebs86tebs8.jpg" alt="倉鼠的大頭貼">
-                <div class="https://i.postimg.cc/DZrhBK8n/Gemini-Generated-Image-wy8hprwy8hprwy8h.jpg"></div>
+                <div class="avatar-badge">
+                    <img src="https://i.postimg.cc/DZrhBK8n/Gemini-Generated-Image-wy8hprwy8hprwy8h.jpg" alt="徽章">
+                </div>
             </div>
             <h1 class="profile-name">ネズミネズミ的日記</h1>
             <span class="profile-subtitle">✨ 網頁程式學習歷程與作品集</span>
@@ -558,7 +580,7 @@
                 <div class="card-top">
                     <span class="week-tag">WEEK 05</span>
                     <div class="card-icon-box">
-                        <i class="fa-solid fa-comment-dots"></i>
+                        <i class="fa-solid fa-heart-pulse"></i>
                     </div>
                 </div>
                 <div class="card-title">Week 5 - 雲端心電感應</div>
@@ -680,7 +702,7 @@
         </main>
 
         <footer>
-            <p> 2026 ネズミネズミ的日記</p>
+            <p>&copy; 2026 ネズミネズミ的日記</p>
         </footer>
 
     </div>
